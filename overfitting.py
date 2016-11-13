@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
+from sklearn import metrics
 import matplotlib.pyplot as plt
 
 np.random.seed(414)
@@ -20,19 +21,17 @@ test_df = pd.DataFrame({'x': test_x, 'y': test_y})
 
 poly_1 = smf.ols(formula='y ~ 1 + x', data=train_df).fit()
 # poly_1.summary() #R-squared:	0.642 #Liner fit
-poly_1.predict(x_new)
+y1 = poly_1.predict(test_df)
 
 poly_2 = smf.ols(formula='y ~ 1 + x + I(x**2)', data=train_df).fit()
 #poly_2.summary() #R-squared:	0.666 # Quadratic Fit
-poly_2.predict(x_new)
+y2 = poly_2.predict(test_df)
 
-poly_3 = smf.ols(formula='y ~ 1 + x + I(x**2)', data=test_df).fit()
-#poly_3.summary()
+plt.plot(x, y, label='original')
+plt.plot(test_x, y1, label='linear')
+plt.plot(test_x, y2, label='quadratic')
+plt.show()
 
-poly_4 = smf.ols(formula='y ~ 1 + x + I(x**2) + I(x**3)', data=test_df).fit()
-#poly_3.summary()
-x_new = pd.DataFrame({'x': [11]})
-#x_new.head()
-poly_2.predict(x_new) #array([ 13.27946907])
-
-poly_1.predict(x_new) #array([ 9.18211145])
+print metrics.accuracy_score(y[700:], y1)
+print metrics.accuracy_score(y[700:], y2)
+#value error
