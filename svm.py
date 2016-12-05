@@ -14,5 +14,5 @@ for i in range (1,10):
     svc = svm.SVC(kernel = 'linear', C = i)
     svc.fit(X_train, y_train)
     results = svc.predict(X_test)
-    scores.append(accuracy_s
+    scores.append(accuracy_score)
 #  bias and variance trade off
